@@ -209,6 +209,8 @@ class LucidDreamer:
 
         for j, tqdm_i in enumerate(progress.tqdm(range(1, len(render_poses)), desc='Dreaming')):
             i = j + 1
+            if i == len(render_poses) - 1:
+                break
             R, T = render_poses[i,:3,:3], render_poses[i,:3,3:4]
 
             ### Transform world to pixel
@@ -338,6 +340,8 @@ class LucidDreamer:
         time.sleep(0.5)
 
         for i, tqdm_i in enumerate(progress.tqdm(range(len(render_poses)), desc='Aligning')):
+            if i == len(render_poses) - 1:
+                break
             for j in range(len(internel_render_poses)):
                 idx = i * len(internel_render_poses) + j
                 print(f'{idx+1} / {len(render_poses)*len(internel_render_poses)}')
