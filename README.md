@@ -16,7 +16,7 @@
 </div>
 
 <p align="center">
-    <img src="assets/demo.gif" height=240>
+    <img src="assets/demo.gif" height=256>
 </p>
 
 > #### [LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes](https://arxiv.org/abs/2311.13384)
