@@ -197,9 +197,7 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
 
-*.png
 *.ply
-*.mp4
 results
 pretrained
 dataset
