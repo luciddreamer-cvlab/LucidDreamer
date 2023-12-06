@@ -50,15 +50,26 @@ cd submodules/depth-diff-gaussian-rasterization-min
 python setup.py install
 cd ../simple-knn
 python setup.py install
+cd ../..
 ```
 
-### Run
+### Run with your own samples
 
 ```bash
+# Default Example
 python run.py
 ``` 
 
----
+To run with your own inputs and prompts, attach following arguments after ``run.py``.
+
+- ``-img`` : path of input image.
+- ``-t`` : text prompt. Can be either path to txt file or the text iteslf.
+- ``-nt`` : negative text prompt. Can be either path to txt file or the text iteslf.
+- ``-cg`` : camera extrinsic path for generating scenes. Can be one of "Rotate_360", "LookAround", or "LookDown".
+- ``-cr`` : camera extrinsic path for rendering videos. Can be one of "Back_and_forth", "LLFF", or "Headbanging".
+- ``--seed`` : manual seed for Stable Diffusion inpainting.
+- ``--diff_steps`` : number of denoising steps for Stable Diffusion inpainting. Default is 50.
+- ``-s`` : path to save results. 
 
 ## 🚩 **Updates**
  

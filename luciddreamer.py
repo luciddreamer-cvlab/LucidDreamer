@@ -15,11 +15,9 @@ import json
 import time
 import warnings
 from random import randint
-from argparse import ArgumentParser
 
 warnings.filterwarnings(action='ignore')
 
-import pickle
 import imageio
 import numpy as np
 import open3d as o3d
@@ -42,9 +40,12 @@ from utils.trajectory import get_camerapaths, get_pcdGenPoses
 
 
 class LucidDreamer:
-    def __init__(self):
+    def __init__(self, savepath='./'):
         self.opt = GSParams()
         self.cam = CameraParams()
+        self.savepath = savepath
+        if not os.path.exists(self.savepath):
+            os.makedirs(self.savepath, exist_ok=True)
 
         self.gaussians = GaussianModel(self.opt.sh_degree)
 
@@ -68,13 +69,12 @@ class LucidDreamer:
         default_gallery = self.render_video('LLFF')
         return outfile, default_gallery
     
-    def save_ply(self, path='./'):
-        os.makedirs(path, exist_ok=True)
-        self.scene.gaussians.save_ply(os.path.join(path, 'gaussiansplatting.ply'))
-        return os.path.join(path, 'gaussiansplatting.ply')
+    def save_ply(self):
+        self.scene.gaussians.save_ply(os.path.join(self.savepath, 'gaussiansplatting.ply'))
+        return os.path.join(self.savepath, 'gaussiansplatting.ply')
 
     def render_video(self, preset, gaussians=None, traindata_path=None):
-        videofname = f'video_{preset}_60fps.mp4'
+        videofname = os.path.join(self.savepath, f'video_{preset}_60fps.mp4')
 
         if not hasattr(self, 'gaussians'):
             self.gaussians = gaussians
@@ -128,7 +128,6 @@ class LucidDreamer:
             viewpoint_stack = self.scene.getTrainCameras().copy()
             viewpoint_cam = viewpoint_stack.pop(randint(0, len(viewpoint_stack)-1))
 
-            # import pdb; pdb.set_trace()
             # Render
             render_pkg = render(viewpoint_cam, self.gaussians, self.opt, self.background)
             image, viewspace_point_tensor, visibility_filter, radii = (
@@ -199,8 +198,8 @@ class LucidDreamer:
         ### initialize 
         R0, T0 = render_poses[0,:3,:3], render_poses[0,:3,3:4]
         pts_coord_cam = np.matmul(np.linalg.inv(K), np.stack((x*depth_curr, y*depth_curr, 1*depth_curr), axis=0).reshape(3,-1))
-        new_pts_coord_world2 = (np.linalg.inv(R0).dot(pts_coord_cam) - np.linalg.inv(R0).dot(T0)).astype(np.float32) ## new_pts_coord_world2
-        new_pts_colors2 = (np.array(image_curr).reshape(-1,3).astype(np.float32)/255.) ## new_pts_colors2
+        new_pts_coord_world2 = (np.linalg.inv(R0).dot(pts_coord_cam) - np.linalg.inv(R0).dot(T0)).astype(np.float32)
+        new_pts_colors2 = (np.array(image_curr).reshape(-1,3).astype(np.float32)/255.)
 
         pts_coord_world, pts_colors = new_pts_coord_world2.copy(), new_pts_colors2.copy()
 
@@ -214,8 +213,8 @@ class LucidDreamer:
             R, T = render_poses[i,:3,:3], render_poses[i,:3,3:4]
 
             ### Transform world to pixel
-            pts_coord_cam2 = R.dot(pts_coord_world) + T  ### Same with c2w*world_coord (in homogeneous space)
-            pixel_coord_cam2 = np.matmul(K, pts_coord_cam2)   #.reshape(3,H,W).transpose(1,2,0).astype(np.float32)
+            pts_coord_cam2 = R.dot(pts_coord_world) + T
+            pixel_coord_cam2 = np.matmul(K, pts_coord_cam2)
 
             valid_idx = np.where(np.logical_and.reduce((pixel_coord_cam2[2]>0, 
                                                         pixel_coord_cam2[0]/pixel_coord_cam2[2]>=0, 
@@ -242,15 +241,13 @@ class LucidDreamer:
             mask_hf = np.abs(mask2[:H-1, :W-1] - mask2[1:, :W-1]) + np.abs(mask2[:H-1, :W-1] - mask2[:H-1, 1:])
             mask_hf = np.pad(mask_hf, ((0,1), (0,1)), 'edge')
             mask_hf = np.where(mask_hf < 0.3, 0, 1)
-            border_valid_idx = np.where(mask_hf[round_coord_cam2[1], round_coord_cam2[0]] == 1)[0]  # use valid_idx[border_valid_idx] for world1
+            border_valid_idx = np.where(mask_hf[round_coord_cam2[1], round_coord_cam2[0]] == 1)[0]
 
             image_curr = self.rgb(prompt=prompt, negative_prompt=negative_prompt, generator=generator, num_inference_steps= diff_steps,
                                     image=Image.fromarray(np.round(image2*255.).astype(np.uint8)), 
                                     mask_image=Image.fromarray(np.round((1-mask2[:,:])*255.).astype(np.uint8))).images[0]
             depth_curr = self.d.infer_pil(image_curr)
 
-
-            ### depth optimize
             t_z2 = torch.tensor(depth_curr)
             sc = torch.ones(1).float().requires_grad_(True)
             optimizer = torch.optim.Adam(params=[sc], lr=0.001)
@@ -278,7 +275,7 @@ class LucidDreamer:
             trans3d = trans3d.detach().numpy()
 
             pts_coord_cam2 = np.matmul(np.linalg.inv(K), np.stack((x*depth_curr, y*depth_curr, 1*depth_curr), axis=0).reshape(3,-1))[:,np.where(1-mask2.reshape(-1))[0]]
-            camera_origin_coord_world2 = - np.linalg.inv(R).dot(T).astype(np.float32) # 3, 1
+            camera_origin_coord_world2 = - np.linalg.inv(R).dot(T).astype(np.float32)
             new_pts_coord_world2 = (np.linalg.inv(R).dot(pts_coord_cam2) - np.linalg.inv(R).dot(T)).astype(np.float32)
             new_pts_coord_world2_warp = np.concatenate((new_pts_coord_world2, np.ones((1, new_pts_coord_world2.shape[1]))), axis=0)
             new_pts_coord_world2 = np.matmul(trans3d, new_pts_coord_world2_warp)
@@ -294,13 +291,13 @@ class LucidDreamer:
             compensate_coord_cam2_correspond = R.dot(compensate_pts_coord_world2_correspond) + T
             homography_coord_cam2_correspond = R.dot(coord_world2_trans.detach().numpy()) + T
 
-            compensate_depth_correspond = compensate_coord_cam2_correspond[-1] - homography_coord_cam2_correspond[-1] # N_correspond
+            compensate_depth_correspond = compensate_coord_cam2_correspond[-1] - homography_coord_cam2_correspond[-1]
             compensate_depth_zero = np.zeros(4)
-            compensate_depth = np.concatenate((compensate_depth_correspond, compensate_depth_zero), axis=0)  # N_correspond+4
+            compensate_depth = np.concatenate((compensate_depth_correspond, compensate_depth_zero), axis=0)
 
-            pixel_cam2_correspond = pixel_coord_cam2[:, border_valid_idx] # 2, N_correspond (xy)
+            pixel_cam2_correspond = pixel_coord_cam2[:, border_valid_idx]
             pixel_cam2_zero = np.array([[0,0,W-1,W-1],[0,H-1,0,H-1]])
-            pixel_cam2 = np.concatenate((pixel_cam2_correspond, pixel_cam2_zero), axis=1).transpose(1,0) # N+H, 2
+            pixel_cam2 = np.concatenate((pixel_cam2_correspond, pixel_cam2_zero), axis=1).transpose(1,0)
 
             # Calculate for masked pixels
             masked_pixels_xy = np.stack(np.where(1-mask2), axis=1)[:, [1,0]]
@@ -318,7 +315,7 @@ class LucidDreamer:
             new_pts_coord_world2 = new_pts_coord_world2[:3] / new_pts_coord_world2[-1]
             new_pts_colors2 = (np.array(image_curr).reshape(-1,3).astype(np.float32)/255.)[np.where(1-mask2.reshape(-1))[0]]
 
-            pts_coord_world = np.concatenate((pts_coord_world, new_pts_coord_world2), axis=-1) ### Same with inv(c2w) * cam_coord (in homogeneous space)
+            pts_coord_world = np.concatenate((pts_coord_world, new_pts_coord_world2), axis=-1)
             pts_colors = np.concatenate((pts_colors, new_pts_colors2), axis=0)
 
         #################################################################################################
@@ -333,7 +330,6 @@ class LucidDreamer:
             'frames': [],
         }
 
-        # render_poses = get_pcdGenPoses(pcdgenpath)
         internel_render_poses = get_pcdGenPoses('hemisphere', {'center_depth': center_depth})
 
         progress(0, desc='Aligning...')
@@ -374,7 +370,7 @@ class LucidDreamer:
                 round_coord_camj = np.round(pixel_coord_camj).astype(np.int32)
 
 
-                x, y = np.meshgrid(np.arange(W, dtype=np.float32), np.arange(H, dtype=np.float32), indexing='xy') # pixels
+                x, y = np.meshgrid(np.arange(W, dtype=np.float32), np.arange(H, dtype=np.float32), indexing='xy')
                 grid = np.stack((x,y), axis=-1).reshape(-1,2)
                 imagej = interp_grid(pixel_coord_camj.transpose(1,0), pts_colors[valid_idxj], grid, method='linear', fill_value=0).reshape(H,W,3)
                 imagej = edgemask[...,None]*imagej + (1-edgemask[...,None])*np.pad(imagej[1:-1,1:-1], ((1,1),(1,1),(0,0)), mode='edge')

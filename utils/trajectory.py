@@ -25,7 +25,7 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.eye(3),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))) # Turn left
-        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1)
         render_poses.append(posetemp)
     
     for i,j in zip([-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -33,7 +33,7 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(-3*ang/180*np.pi), 0, np.sin(-3*ang/180*np.pi)], [0, 1, 0], [-np.sin(-3*ang/180*np.pi), 0, np.cos(-3*ang/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-        posetemp[:3,3:4] = np.array([1,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([1,0,0]).reshape(3,1)
         render_poses.append(posetemp)
     
     for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -41,16 +41,8 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(3*ang/180*np.pi), 0, np.sin(3*ang/180*np.pi)], [0, 1, 0], [-np.sin(3*ang/180*np.pi), 0, np.cos(3*ang/180*np.pi)]]), 
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-        posetemp[:3,3:4] = np.array([-1,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([-1,0,0]).reshape(3,1)
         render_poses.append(posetemp)
-    
-    # for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,0,0,0]): 
-    #     th, phi = i/180*np.pi, j/180*np.pi
-    #     posetemp = np.zeros((3, 4))
-    #     posetemp[:3,:3] = np.matmul(np.eye(3), 
-    #                                 np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-    #     posetemp[:3,3:4] = np.array([0,0,1]).reshape(3,1) # * scale # Transition vector   
-    #     render_poses.append(posetemp)
 
 
     rot_cam=viewangle/3
@@ -59,7 +51,7 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))) # Turn left
-        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1)
         render_poses.append(posetemp)
 
     for i,j in zip([-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -68,7 +60,7 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(-3*ang/180*np.pi), 0, np.sin(-3*ang/180*np.pi)], [0, 1, 0], [-np.sin(-3*ang/180*np.pi), 0, np.cos(-3*ang/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([0,0,1]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,1]).reshape(3,1)
         render_poses.append(posetemp)
     
     for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -77,16 +69,8 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(3*ang/180*np.pi), 0, np.sin(3*ang/180*np.pi)], [0, 1, 0], [-np.sin(3*ang/180*np.pi), 0, np.cos(3*ang/180*np.pi)]]), 
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([0,0,-1]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,-1]).reshape(3,1)
         render_poses.append(posetemp)
-    
-    # for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,0,0,0]): 
-    #     th, phi = i/180*np.pi, j/180*np.pi
-    #     posetemp = np.zeros((3, 4))
-    #     posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
-    #                                 np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-    #     posetemp[:3,3:4] = np.array([1,0,0]).reshape(3,1) # * scale # Transition vector   
-    #     render_poses.append(posetemp)
 
 
     rot_cam=viewangle*2/3
@@ -95,7 +79,7 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))) # Turn left
-        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1)
         render_poses.append(posetemp)
 
     for i,j in zip([-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -104,7 +88,7 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(-3*ang/180*np.pi), 0, np.sin(-3*ang/180*np.pi)], [0, 1, 0], [-np.sin(-3*ang/180*np.pi), 0, np.cos(-3*ang/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([-1,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([-1,0,0]).reshape(3,1)
         render_poses.append(posetemp)
     
     for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -113,16 +97,8 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(3*ang/180*np.pi), 0, np.sin(3*ang/180*np.pi)], [0, 1, 0], [-np.sin(3*ang/180*np.pi), 0, np.cos(3*ang/180*np.pi)]]), 
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([1,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([1,0,0]).reshape(3,1)
         render_poses.append(posetemp)
-    
-    # for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,0,0,0]): 
-    #     th, phi = i/180*np.pi, j/180*np.pi
-    #     posetemp = np.zeros((3, 4))
-    #     posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
-    #                                 np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-    #     posetemp[:3,3:4] = np.array([0,0,-1]).reshape(3,1) # * scale # Transition vector   
-    #     render_poses.append(posetemp)
 
     rot_cam=viewangle
     for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,0,0,0]): 
@@ -130,7 +106,7 @@ def generate_seed(scale, viewangle):
         posetemp = np.zeros((3, 4))
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))) # Turn left
-        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,0]).reshape(3,1)
         render_poses.append(posetemp)
 
     for i,j in zip([-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -139,7 +115,7 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(-3*ang/180*np.pi), 0, np.sin(-3*ang/180*np.pi)], [0, 1, 0], [-np.sin(-3*ang/180*np.pi), 0, np.cos(-3*ang/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([0,0,-1]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,-1]).reshape(3,1) 
         render_poses.append(posetemp)
     
     for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,ang,ang,ang,ang,0,-ang,-ang,-ang,-ang,-ang,0,0,0,0]): 
@@ -148,16 +124,8 @@ def generate_seed(scale, viewangle):
         posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
                                     np.matmul(np.array([[np.cos(3*ang/180*np.pi), 0, np.sin(3*ang/180*np.pi)], [0, 1, 0], [-np.sin(3*ang/180*np.pi), 0, np.cos(3*ang/180*np.pi)]]), 
                                     np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]]))))
-        posetemp[:3,3:4] = np.array([0,0,1]).reshape(3,1) # * scale # Transition vector   
+        posetemp[:3,3:4] = np.array([0,0,1]).reshape(3,1) 
         render_poses.append(posetemp)
-    
-    # for i,j in zip([ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,ang,2*ang,3*ang,2*ang,ang,0], [0,0,0,ang,2*ang,3*ang,2*ang,ang,0,-ang,-2*ang,-3*ang,-2*ang,-ang,0,0,0,0]): 
-    #     th, phi = i/180*np.pi, j/180*np.pi
-    #     posetemp = np.zeros((3, 4))
-    #     posetemp[:3,:3] = np.matmul(np.array([[np.cos(rot_cam/180*np.pi), 0, np.sin(rot_cam/180*np.pi)], [0, 1, 0], [-np.sin(rot_cam/180*np.pi), 0, np.cos(rot_cam/180*np.pi)]]),
-    #                                 np.matmul(np.array([[np.cos(th), 0, np.sin(th)], [0, 1, 0], [-np.sin(th), 0, np.cos(th)]]), np.array([[1, 0, 0], [0, np.cos(phi), -np.sin(phi)], [0, np.sin(phi), np.cos(phi)]])))
-    #     posetemp[:3,3:4] = np.array([-1,0,0]).reshape(3,1) # * scale # Transition vector   
-    #     render_poses.append(posetemp)
 
     render_poses.append(np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0]]))
     render_poses = np.stack(render_poses, axis=0)
@@ -254,11 +222,10 @@ def generate_seed_arc():
     render_poses = np.zeros((len(thlist), 3, 4))
     for i in range(len(thlist)):
         th = thlist[i]
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
-        # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
 
@@ -273,19 +240,15 @@ def generate_seed_hemisphere(center_depth, degree=5):
     for i in range(len(thlist)):
         th = thlist[i]
         phi = philist[i]
-        # curr_pose = np.zeros((1, 3, 4))
-        d = center_depth # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = center_depth
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
-        # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
 
 
 def generate_seed_hemisphere_(degree, nviews):
-    # thlist = np.array([degree, 0, 0, 0, -degree])
-    # philist = np.array([0, -degree, 0, degree, 0])
     thlist = degree * np.sin(np.linspace(0, 2*np.pi, nviews))
     philist = degree * np.cos(np.linspace(0, 2*np.pi, nviews))
     assert len(thlist) == len(philist)
@@ -294,8 +257,7 @@ def generate_seed_hemisphere_(degree, nviews):
     for i in range(len(thlist)):
         th = thlist[i]
         phi = philist[i]
-        # curr_pose = np.zeros((1, 3, 4))
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
@@ -312,12 +274,10 @@ def generate_seed_nothing():
     for i in range(len(thlist)):
         th = thlist[i]
         phi = philist[i]
-        # curr_pose = np.zeros((1, 3, 4))
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
-        # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
 
@@ -410,7 +370,7 @@ def generate_seed_lookdown():
 
 def generate_seed_back():
     movement = np.linspace(0, 5, 101)
-    render_poses = [] # np.zeros((len(movement), 3, 4))
+    render_poses = []
     for i in range(len(movement)):
         render_pose = np.zeros((3,4))
         render_pose[:3,:3] = np.eye(3)
@@ -430,9 +390,6 @@ def generate_seed_back():
 
 def generate_seed_llff(degree, nviews, round=4, d=2.3):
     assert round%4==0
-    # thlist = np.array([degree, 0, 0, 0, -degree])
-    # philist = np.array([0, -degree, 0, degree, 0])
-    # d = 2.3
     thlist = degree * np.sin(np.linspace(0, 2*np.pi*round, nviews))
     philist = degree * np.cos(np.linspace(0, 2*np.pi*round, nviews))
     zlist = d/15 * np.sin(np.linspace(0, 2*np.pi*round//4, nviews))
@@ -443,11 +400,10 @@ def generate_seed_llff(degree, nviews, round=4, d=2.3):
         th = thlist[i]
         phi = philist[i]
         z = zlist[i]
-        # curr_pose = np.zeros((1, 3, 4))
-        # d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, -z+d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), -z+d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
+    
     return render_poses
 
 
@@ -556,7 +512,7 @@ def main():
         render_poses = generate_seed_llff(5, 400, round=4, d=d)
     elif cam_path == 'headbanging':
         round=3
-        render_poses = generate_seed_headbanging_(maxdeg=15, nviews_per_round=180, round=round, fullround=0)
+        render_poses = generate_seed_headbanging_circle(maxdeg=15, nviews_per_round=180, round=round, fullround=0)
     elif cam_path == 'headbanging_circle':
         round=2
         render_poses = generate_seed_headbanging_circle(maxdeg=5, nviews_per_round=180, round=round, fullround=0)
