@@ -41,7 +41,7 @@
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
-pip install peft diffusers scipy numpy imageio[ffmpeg] Pillow open3d torchvision gradio
+pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d torchvision gradio
 pip install torch==2.0.1 timm==0.6.7 # ZoeDepth
 pip install plyfile==0.8.1 # Gaussian splatting
 conda install -c pytorch -c nvidia faiss-gpu=1.7.4 mkl=2021 blas # FAISS
