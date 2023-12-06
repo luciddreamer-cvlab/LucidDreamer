@@ -1,8 +1,8 @@
 <p align="center">
-    <img src="assets/logo.png" height=180>
+    <img src="assets/logo_color.png" height=180>
 </p>
 
-# 😴 LucidDreamer 😴
+# 😴 LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes 😴
 
 <div align="center">
 
@@ -10,13 +10,44 @@
 [![ArXiv](https://img.shields.io/badge/Arxiv-2311.13384-red)](https://arxiv.org/abs/2311.13384)
 [![Github](https://img.shields.io/github/stars/luciddreamer-cvlab/LucidDreamer?label=Github&color=blue)]()
 [![X](https://img.shields.io/twitter/url?url=https%3A%2F%2Ftwitter.com%2F_ironjr_)](https://twitter.com/_ironjr_)
-[![LICENSE](https://img.shields.io/badge/license-CC-BY-NC-SA-4.0-blue)](https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/LICENSE)
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/ironjr/luciddreamer)
+[![LICENSE](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)](https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/LICENSE)
 
 </div>
 
+<div align="center">
+  <tr>
+    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/animestreet2_back_rgb.mp4"></video></td>
+    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/fig5ours_360_rgb.mp4"></video></td>
+    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/waterfall_back_rgb.mp4"></video></td>
+  </tr>
+</div>
+
+> #### [LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes](https://arxiv.org/abs/2311.13384)
+> ##### \*[Jaeyoung Chung](https://robot0321.github.io/), \*[Suyoung Lee](https://esw0116.github.io/), [Hyeongjin Nam](https://hygenie1228.github.io/), [Jaerin Lee](http://jaerinlee.com/), [Kyoung Mu Lee](https://cv.snu.ac.kr/index.php/~kmlee/)
+> ###### \*Denotes equal contribution.
+
+<p align="center">
+    <img src="assets/logo_cvlab.png" height=90>
+</p>
+
+
 ---
 
-## ⚡ HOWTO
+## 📋 **Table of Contents** <!-- omit in toc -->
+- [**Usage**](#usage)
+  - [Prerequisite](#prerequisite)
+  - [Install](#install)
+  - [Run](#run)
+- [**Updates**](#updates)
+- [**Citation**](#citation)
+- [**Acknowledgement**](#acknowledgement)
+- [**Contact**](#contact)
+
+---
+
+
+## ⚡ Usage
 
 ### Prerequisite
 
@@ -46,10 +77,10 @@ python run.py
 
 ---
 
-🚩 **Updates**
+## 🚩 **Updates**
  
-- ✅ December 6, 2023. Code release.
-- ✅ November 22, 2023. We have released our paper, LucidDreamer on [arXiv](https://arxiv.org/abs/2311.13384).
+- ✅ December 6, 2023: Code release!
+- ✅ November 22, 2023: We have released our paper, LucidDreamer on [arXiv](https://arxiv.org/abs/2311.13384).
 
 ## 🌏 Citation
 
@@ -64,9 +95,9 @@ Please cite us if you find our project useful!
 }
 ```
 
-## 📧 Acknowledgement
+## 🤗 Acknowledgement
 
-We deeply appreciate [ZoeDepth](https://github.com/isl-org/ZoeDepth) and [Stability AI and Runway](https://huggingface.co/runwayml/stable-diffusion-v1-5) for their models.
+We deeply appreciate [ZoeDepth](https://github.com/isl-org/ZoeDepth), [Stability AI](), and [Runway](https://huggingface.co/runwayml/stable-diffusion-v1-5) for their models.
 
 ## 📧 Contact
 
