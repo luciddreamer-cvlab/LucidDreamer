@@ -10,39 +10,22 @@
 [![ArXiv](https://img.shields.io/badge/Arxiv-2311.13384-red)](https://arxiv.org/abs/2311.13384)
 [![Github](https://img.shields.io/github/stars/luciddreamer-cvlab/LucidDreamer?label=Github&color=blue)]()
 [![X](https://img.shields.io/twitter/url?url=https%3A%2F%2Ftwitter.com%2F_ironjr_)](https://twitter.com/_ironjr_)
-[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/ironjr/luciddreamer)
 [![LICENSE](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)](https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/LICENSE)
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/ironjr/luciddreamer)
 
 </div>
 
-<div align="center">
-  <tr>
-    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/animestreet2_back_rgb.mp4"></video></td>
-    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/fig5ours_360_rgb.mp4"></video></td>
-    <td><video width="200" height="200" src="https://github.com/luciddreamer-cvlab/LucidDreamer/blob/master/assets/waterfall_back_rgb.mp4"></video></td>
-  </tr>
-</div>
+<p align="center">
+    <img src="assets/demo.gif" height=180>
+</p>
 
 > #### [LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes](https://arxiv.org/abs/2311.13384)
 > ##### \*[Jaeyoung Chung](https://robot0321.github.io/), \*[Suyoung Lee](https://esw0116.github.io/), [Hyeongjin Nam](https://hygenie1228.github.io/), [Jaerin Lee](http://jaerinlee.com/), [Kyoung Mu Lee](https://cv.snu.ac.kr/index.php/~kmlee/)
-> ###### \*Denotes equal contribution.
+###### \*Denotes equal contribution.
 
 <p align="center">
-    <img src="assets/logo_cvlab.png" height=90>
+    <img src="assets/logo_cvlab.png" height=60>
 </p>
-
-
----
-
-## 📋 **Table of Contents** <!-- omit in toc -->
-- [**Usage**](#usage)
-  - [Prerequisite](#prerequisite)
-  - [Install](#install)
-  - [Run](#run)
-- [**Updates**](#updates)
-- [**Citation**](#citation)
-- [**Acknowledgement**](#acknowledgement)
-- [**Contact**](#contact)
 
 ---
 
