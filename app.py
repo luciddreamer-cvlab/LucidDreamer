@@ -10,7 +10,48 @@
 # its affiliates is strictly prohibited.
 #
 # For permission requests, please contact robot0321@snu.ac.kr, esw0116@snu.ac.kr, namhj28@gmail.com, jarin.lee@gmail.com.
+import os
+import glob
+import time
+import pathlib
+import shlex
+import subprocess
 import gradio as gr
+from huggingface_hub import snapshot_download
+
+
+root = pathlib.Path(__file__).parent
+example_root = os.path.join(root, 'examples')
+ckpt_root = os.path.join(root, 'stablediffusion')
+
+d = example_root
+if len(glob.glob(os.path.join(d, '*.ply'))) < 8:
+    snapshot_download(repo_id="ironjr/LucidDreamerDemo", repo_type="model", local_dir=d)
+
+d = os.path.join(ckpt_root, 'Blazing Drive V11m')
+if not os.path.exists(d):
+    snapshot_download(repo_id="ironjr/BlazingDriveV11m", repo_type="model", local_dir=d)
+d = os.path.join(ckpt_root, 'RealCartoon-Pixar V5')
+if not os.path.exists(d):
+    snapshot_download(repo_id="ironjr/RealCartoon-PixarV5", repo_type="model", local_dir=d)
+d = os.path.join(ckpt_root, 'Realistic Vision V5.1')
+if not os.path.exists(d):
+    snapshot_download(repo_id="ironjr/RealisticVisionV5-1", repo_type="model", local_dir=d)
+d = os.path.join(ckpt_root, 'SD1-5')
+if not os.path.exists(d):
+    snapshot_download(repo_id="runwayml/stable-diffusion-inpainting", repo_type="model", local_dir=d)
+
+try:
+    import simple_knn
+except ModuleNotFoundError:
+    #  subprocess.run(shlex.split('python setup.py install'), cwd=os.path.join(root, 'submodules', 'simple-knn'))
+    subprocess.run(shlex.split(f'pip install {root}/dist/simple_knn-0.0.0-cp39-cp39-linux_x86_64.whl'))
+try:
+    import depth_diff_gaussian_rasterization_min 
+except ModuleNotFoundError:
+    #  subprocess.run(shlex.split('python setup.py install'), cwd=os.path.join(root, 'submodules', 'depth-diff-gaussian-rasterization-min'))
+    subprocess.run(shlex.split(f'pip install {root}/dist/depth_diff_gaussian_rasterization_min-0.0.0-cp39-cp39-linux_x86_64.whl'))
+
 from luciddreamer import LucidDreamer
 
 
@@ -22,6 +63,7 @@ css = """
 """
 
 ld = LucidDreamer()
+
 
 with gr.Blocks(css=css) as demo:
 
@@ -41,7 +83,7 @@ with gr.Blocks(css=css) as demo:
                     <img src='https://img.shields.io/badge/Project-LucidDreamer-green' alt='Project Page'>
                 </a>
                 &nbsp;
-                <a href='https://github.com/ironjr/LucidDreamer'>
+                <a href='https://github.com/luciddreamer-cvlab/LucidDreamer'>
                     <img src='https://img.shields.io/github/stars/luciddreamer-cvlab/LucidDreamer?label=Github&color=blue'>
                 </a>
                 &nbsp;
@@ -56,9 +98,9 @@ with gr.Blocks(css=css) as demo:
 
     with gr.Row():
 
-        result_gallery = gr.Video(label='Custom View Video', show_label=True)
+        result_gallery = gr.Video(label='RGB Video', show_label=True, autoplay=True, format='mp4')
 
-        result_default_gallery = gr.Video(label='Default View 3D', show_label=True)
+        result_depth = gr.Video(label='Depth Video', show_label=True, autoplay=True, format='mp4')
 
         result_ply_file = gr.File(label='Gaussian splatting PLY', show_label=True)
 
@@ -72,35 +114,46 @@ with gr.Blocks(css=css) as demo:
         )
 
         with gr.Column():
+            model_name = gr.Radio(
+                label='SD checkpoint',
+                choices=['SD1.5 (default)', 'Blazing Drive V11m', 'Realistic Vision V5.1', 'RealCartoon-Pixar V5',],
+                value='SD1.5 (default)'
+            )
+            
             prompt = gr.Textbox(
                 label='Text prompt',
                 value='A cozy livingroom',
             )
             n_prompt = gr.Textbox(
                 label='Negative prompt',
-                value='photo frame, frame, boarder, simple color, inconsistent',
+                value='photo frame, frame, boarder, simple color, inconsistent, humans, people',
             )
             gen_camerapath = gr.Radio(
-                label='Camera trajectory for scene generation',
-                choices=['Rotate_360', 'LookAround', 'LookDown'],
+                label='Camera trajectory for generation (STEP 1)',
+                choices=['lookaround', 'lookdown', 'rotate360'],
+                value='lookaround',
             )
-            seed = gr.Slider(
-                label='Seed',
-                minimum=1,
-                maximum=2147483647,
-                step=1,
-                randomize=True,
-            )
-            diff_steps = gr.Slider(
-                label='SD inpainting steps',
-                minimum=1,
-                maximum=50,
-                step=1,
-                value=30,
-            )
+            
+            with gr.Row():
+                seed = gr.Slider(
+                    label='Seed',
+                    minimum=1,
+                    maximum=2147483647,
+                    step=1,
+                    randomize=True,
+                )
+                diff_steps = gr.Slider(
+                    label='SD inpainting steps',
+                    minimum=1,
+                    maximum=50,
+                    step=1,
+                    value=30,
+                )
+
             render_camerapath = gr.Radio(
-                label='Camera trajectory for video rendering',
-                choices=['Back_and_forth', 'LLFF', 'Headbanging'],
+                label='Camera trajectory for rendering (STEP 2)',
+                choices=['back_and_forth', 'llff', 'headbanging'],
+                value='llff',
             )
 
         with gr.Column():
@@ -111,58 +164,148 @@ with gr.Blocks(css=css) as demo:
                 <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
                 <div>
                     <h3>...or you can run in two steps</h3>
-                    <h4>(hint: press STEP 2 if you have already baked Gaussians).</h4>
+                    <h5>(hint: press STEP 2 if you have already baked Gaussians in STEP 1).</h5>
                 </div>
                 </div>
                 """
             )
 
             with gr.Row():
-                gaussian_button = gr.Button(value='STEP 1: Get Gaussians')
+                gaussian_button = gr.Button(value='STEP 1: Generate Gaussians')
                 render_button = gr.Button(value='STEP 2: Render A Video')
 
-    ips = [input_image, prompt, n_prompt, gen_camerapath, seed, diff_steps, render_camerapath]
+            gr.HTML(
+                """
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                <div>
+                    <h5>...or you can just watch a quick preload we have baked already.</h5>
+                </div>
+                </div>
+                """
+            )
 
-    run_button.click(fn=ld.run, inputs=ips, outputs=[result_ply_file, result_default_gallery, result_gallery])
-    gaussian_button.click(fn=ld.create, inputs=ips[:-1], outputs=[result_ply_file, result_default_gallery])
-    render_button.click(fn=ld.render_video, inputs=ips[-1:], outputs=[result_gallery])
+            example_name = gr.Radio(
+                label='Quick load',
+                choices=['girl', 'ruin', 'doge', 'christmas', 'elf', 'animelake', 'fantasy', 'kitchen', 'DON\'T'],
+                value='DON\'T',
+            )
+
+    ips = [example_name, input_image, prompt, n_prompt, gen_camerapath, seed, diff_steps, render_camerapath, model_name]
+
+    run_button.click(fn=ld.run, inputs=ips[1:] + ips[:1], outputs=[result_ply_file, result_gallery, result_depth])
+    gaussian_button.click(fn=ld.create, inputs=ips[1:-2] + ips[-1:] + ips[:1], outputs=[result_ply_file])
+    render_button.click(fn=ld.render_video, inputs=ips[-2:-1] + ips[:1], outputs=[result_gallery, result_depth])
 
     gr.Examples(
         examples=[
             [
+                'girl',
+                'examples/girl.jpg',
+                'dark messy room, noir style, indoors, bottle, shoe soles, jacket, cup, window, blurry, black footwear, depth of field, box, couch, table, gun, chair, foreshortening',
+                'photo frame, frame, boarder, simple color, inconsistent',
+                'lookaround',
+                10,
+                25,
+                'back_and_forth',
+                'Blazing Drive V11m',
+            ],
+            [
+                'ruin',
+                'examples/ruin.png',
+                'Postapocalyptic city in desert',
+                'photo frame, frame, boarder, simple color, inconsistent, humans, people',
+                'lookaround',
+                4,
+                25,
+                'back_and_forth',
+                'Blazing Drive V11m',
+            ],
+            [
+                'doge',
+                'examples/doge.png',
+                'a cozy livingroom',
+                'photo frame, frame, boarder, simple color, inconsistent, humans, people',
+                'lookaround',
+                10,
+                25,
+                'back_and_forth',
+                'Realistic Vision V5.1',
+            ],
+            [
+                'christmas',
+                'examples/christmas.png',
+                'Cozy livingroom in christmas',
+                'photo frame, frame, boarder, simple color, inconsistent, humans, people',
+                'lookaround',
+                3,
+                25,
+                'back_and_forth',
+                'Realistic Vision V5.1',
+            ],
+            [
+                'elf',
+                'examples/elf.png',
+                'serene deep forest',
+                'photo frame, frame, boarder, simple color, inconsistent, humans, people',
+                'lookaround',
+                10,
+                25,
+                'back_and_forth',
+                'RealCartoon-Pixar V5',
+            ],
+            [
+                'animelake',
                 'examples/Image015_animelakehouse.jpg',
                 'anime style, animation, best quality, a boat on lake, trees and rocks near the lake. a house and port in front of a house',
                 'photo frame, frame, boarder, simple color, inconsistent',
-                'LookDown',
+                'lookdown',
                 1,
                 50,
-                'Back_and_forth',
+                'back_and_forth',
+                'SD1.5 (default)',
             ],
             [
+                'fantasy',
                 'examples/Image003_fantasy.jpg',
                 'A vibrant, colorful floating community city, clouds above a beautiful, enchanted landscape filled with whimsical flora, enchanted forest landscape, Magical and dreamy woodland with vibrant green foliage and sparkling flowers, Landscape with twisted trees and vines, natural lighting and dark shadows, unique fantastical elements like floating islands and floating orbs, Highly detailed vegetation and foliage, deep contrast and color vibrancy,', # texture and intricate details in a floating element',
                 'photo frame, frame, boarder, simple color, inconsistent',
-                'LookAround',
-                4,
+                'lookaround',
+                30,
                 50,
-                'Back_and_forth',
+                'back_and_forth',
+                'SD1.5 (default)',
             ],
             [
+                'kitchen',
                 'examples/image020.png',
-                'High-resolution photography kitchen design, wooden floor, small windows opening onto the garden, Bauhaus furniture and decoration, high ceiling, beige blue salmon pastel palette, interior design magazine, cozy atmosphere; 8k, intricate detail, photorealistic, realistic light, wide angle, kinfolk photography, A+D architecture, Kitchen Sink, Basket of fruits and vegetables, a bottle of drinking water, walls painted magazine style photo, looking towards a sink under a window, with a door on the left of the sink with a 25 cm distance from the kitchen, the kitchen is an L shaped starting from the right corner, on the far right a fridge nest to it a stove, next the dishwasher then the sink, a smokey grey kitchen with modern touches, taupe walls, a taup ceiling with spotlights inside the ceiling with 90 cm distance, wooden parquet floor',
+                'High-resolution photography kitchen design, wooden floor, small windows opening onto the garden, Bauhaus furniture and decoration, high ceiling, beige blue salmon pastel palette, interior design magazine, cozy atmosphere; 8k, intricate detail, photorealistic, realistic light, wide angle, kinfolk photography, A+D architecture, Kitchen Sink, Basket of fruits and vegetables, a bottle of ', #drinking water, walls painted magazine style photo, looking towards a sink under a window, with a door on the left of the sink with a 25 cm distance from the kitchen, the kitchen is an L shaped starting from the right corner, on the far right a fridge nest to it a stove, next the dishwasher then the sink, a smokey grey kitchen with modern touches, taupe walls, a taup ceiling with spotlights inside the ceiling with 90 cm distance, wooden parquet floor',
                 'photo frame, frame, boarder, simple color, inconsistent',
-                'Rotate_360',
+                'rotate360',
                 1,
                 50,
-                'Headbanging',
+                'headbanging',
+                'SD1.5 (default)',
             ],
         ],
         inputs=ips,
-        outputs=[result_ply_file],
-        fn=ld.create,
+        outputs=[result_ply_file, result_gallery, result_depth],
+        fn=ld.run,
         cache_examples=False,
+    )
+
+    gr.HTML(
+        """
+        <div style="display: flex; justify-content: center; align-items: center; text-align: left;">
+        </br>
+        <div>
+            <h5 style="margin: 0;">Acknowledgement and Disclaimer</h5>
+            </br>
+            <p>We deeply thank <a href="https://twitter.com/br_d">br_d</a>, <a href="https://ko-fi.com/7whitefire7">7whitefire7</a>, and <a href="https://huggingface.co/SG161222">SG161222</a> for their awesome Stable Diffusion models. We also appreciate <a href="https://twitter.com/ai_pictures21">ai_pictures21</a> and <a href="https://twitter.com/recatm">recatm</a> for the beautiful illustrations used in the examples. Please note that the authors of this work do not own the model checkpoints and the illustrations in this demo. LucidDreamer algorithm cannot be used for commercial purpose. Please contact the authors for permission requests.</p>
+        </div>
+        </div>
+        """
     )
 
 
 if __name__ == '__main__':
-    demo.queue(max_size=20).launch()
+    demo.launch()
