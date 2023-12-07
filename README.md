@@ -36,7 +36,7 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 
 - Linux: Ubuntu>18.04
 
-### Intall
+### Install
 
 ```bash
 conda create -n lucid python=3.9
