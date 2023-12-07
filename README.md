@@ -17,7 +17,7 @@
 </div>
 
 <p align="center">
-    <img src="assets/demo.gif" height=256>
+    <video src="assets/demo.mp4" height=256 autoplay loop muted>
 </p>
 
 > #### [LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes](https://arxiv.org/abs/2311.13384)
