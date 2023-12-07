@@ -16,9 +16,8 @@
 
 </div>
 
-<p align="center">
-    <video src="assets/demo.mp4" height=256 autoplay loop muted>
-</p>
+https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc-4133-b15a-05224e68b91e
+
 
 > #### [LucidDreamer: Domain-free Generation of 3D Gaussian Splatting Scenes](https://arxiv.org/abs/2311.13384)
 > ##### \*[Jaeyoung Chung](https://robot0321.github.io/), \*[Suyoung Lee](https://esw0116.github.io/), [Hyeongjin Nam](https://hygenie1228.github.io/), [Jaerin Lee](http://jaerinlee.com/), [Kyoung Mu Lee](https://cv.snu.ac.kr/index.php/~kmlee/)
@@ -33,11 +32,23 @@
 
 ## ⚡ Usage
 
+We offer several ways to interact with LucidDreamer:
+
+1. A demo is available on [`ironjr/LucidDreamer` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer)
+(We appreciate all the HF / Gradio team for their support).
+
+https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215-4db2-80d5-4825e91316bc
+
+2. Another demo is available on a [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb), implemented by [@camenduru](https://github.com/camenduru)
+(We greatly thank [@camenduru](https://github.com/camenduru) for the contribution).
+3. You can use the gradio demo locally by running [`CUDA_VISIBLE_DEVICES=0 python app.py`](app.py).
+4. You can also run this with command line interface as described below.
+
 ### Prerequisite
 
 - Linux: Ubuntu>18.04
 
-### Intall
+### Install
 
 ```bash
 conda create -n lucid python=3.9
@@ -73,6 +84,7 @@ To run with your own inputs and prompts, attach following arguments after ``run.
 
 ## 🚩 **Updates**
 
+- ✅ December 8, 2023: [HuggingFace Space demo](https://huggingface.co/spaces/ironjr/LucidDreamer) is out. We deeply thank all the HF team for their support!
 - ✅ December 7, 2023: [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb) implementation is now available thanks to [@camenduru](https://github.com/camenduru)!
 - ✅ December 6, 2023: Code release!
 - ✅ November 22, 2023: We have released our paper, LucidDreamer on [arXiv](https://arxiv.org/abs/2311.13384).
