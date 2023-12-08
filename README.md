@@ -111,4 +111,14 @@ We deeply appreciate [ZoeDepth](https://github.com/isl-org/ZoeDepth), [Stability
 
 ## 📧 Contact
 
-If you have any questions, please email `robot0321@snu.ac.kr`, `esw0116@snu.ac.kr`.
+If you have any questions, please email `robot0321@snu.ac.kr`, `esw0116@snu.ac.kr`, `jarin.lee@gmail.com`.
+
+## ⭐ Star History
+
+<a href="https://star-history.com/#luciddreamer-cvlab/LucidDreamer&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=luciddreamer-cvlab/LucidDreamer&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=luciddreamer-cvlab/LucidDreamer&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=luciddreamer-cvlab/LucidDreamer&type=Date" />
+  </picture>
+</a>
