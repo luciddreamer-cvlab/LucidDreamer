@@ -56,9 +56,11 @@ pad_mask = lambda x, padamount=1: t2np(
 
 
 class LucidDreamer:
-    def __init__(self):
+    def __init__(self, for_gradio=True, save_dir=None):
         self.opt = GSParams()
         self.cam = CameraParams()
+        self.save_dir = save_dir
+        self.for_gradio = for_gradio
         self.root = 'outputs'
         self.default_model = 'SD1.5 (default)'
         self.timestamp = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
@@ -69,7 +71,8 @@ class LucidDreamer:
         self.background = torch.tensor(bg_color, dtype=torch.float32, device='cuda')
         
         self.rgb_model = StableDiffusionInpaintPipeline.from_pretrained(
-            'stablediffusion/SD1-5', revision='fp16', torch_dtype=torch.float16).to('cuda')
+            'runwayml/stable-diffusion-inpainting', revision='fp16', torch_dtype=torch.float16).to('cuda')
+            # 'stablediffusion/SD1-5', revision='fp16', torch_dtype=torch.float16).to('cuda')
         self.d_model = torch.hub.load('./ZoeDepth', 'ZoeD_N', source='local', pretrained=True).to('cuda')
         self.controlnet = None
         self.lama = None
@@ -129,8 +132,6 @@ class LucidDreamer:
             'width': self.cam.W,
         }
 
-        # image_np = np.array(image).astype(float) / 255.0
-        # mask_np = 1.0 - np.array(mask_image) / 255.0
         image_np = np.round(np.clip(image, 0, 1) * 255.).astype(np.uint8)
         mask_sum = np.clip((image.prod(axis=-1) == 0) + (1 - mask_image), 0, 1)
         mask_padded = pad_mask(mask_sum, 3)
@@ -166,16 +167,15 @@ class LucidDreamer:
         return image
 
     def run(self, rgb_cond, txt_cond, neg_txt_cond, pcdgenpath, seed, diff_steps, render_camerapath, model_name=None, example_name=None):
-        # gaussians, default_gallery = self.create(
         gaussians = self.create(
             rgb_cond, txt_cond, neg_txt_cond, pcdgenpath, seed, diff_steps, model_name, example_name)
         gallery, depth = self.render_video(render_camerapath, example_name=example_name)
         return (gaussians, gallery, depth)
-        # return (gaussians, default_gallery, gallery)
 
     def create(self, rgb_cond, txt_cond, neg_txt_cond, pcdgenpath, seed, diff_steps, model_name=None, example_name=None):
-        self.cleaner()
-        self.load_model(model_name)
+        if self.for_gradio:
+            self.cleaner()
+            self.load_model(model_name)
         if example_name and example_name != 'DON\'T':
             outfile = os.path.join('examples', f'{example_name}.ply')
             if not os.path.exists(outfile):
@@ -188,9 +188,8 @@ class LucidDreamer:
             self.scene = Scene(self.traindata, self.gaussians, self.opt)        
             self.training()
             self.timestamp = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
-            outfile = self.save_ply()
-        # default_gallery = self.render_video('llff', example_name=example_name)
-        return outfile #, default_gallery
+            outfile = self.save_ply(os.path.join(self.save_dir, 'gsplat.ply'))
+        return outfile
     
     def save_ply(self, fpath=None):
         if fpath is None:
@@ -218,8 +217,12 @@ class LucidDreamer:
             videopath = os.path.join('examples', f'{example_name}_{preset}.mp4')
             depthpath = os.path.join('examples', f'depth_{example_name}_{preset}.mp4')
         else:
-            videopath = os.path.join(self.root, self.timestamp, f'{preset}.mp4')
-            depthpath = os.path.join(self.root, self.timestamp, f'depth_{preset}.mp4')
+            if self.for_gradio:
+                videopath = os.path.join(self.root, self.timestamp, f'{preset}.mp4')
+                depthpath = os.path.join(self.root, self.timestamp, f'depth_{preset}.mp4')
+            else:
+                videopath = os.path.join(self.save_dir, f'{preset}.mp4')
+                depthpath = os.path.join(self.save_dir, f'depth_{preset}.mp4')
         if os.path.exists(videopath) and os.path.exists(depthpath):
             return videopath, depthpath
         
@@ -231,8 +234,14 @@ class LucidDreamer:
         framelist = []
         depthlist = []
         dmin, dmax = 1e8, -1e8
-        for view in progress.tqdm(views, desc='[4/4] Rendering a video'):
-            results = render(view, self.gaussians, self.opt, self.background, render_only=True)
+
+        if self.for_gradio:
+            iterable_render = progress.tqdm(views, desc='[4/4] Rendering a video')
+        else:
+            iterable_render = views
+
+        for view in iterable_render:
+            results = render(view, self.gaussians, self.opt, self.background)
             frame, depth = results['render'], results['depth']
             framelist.append(
                 np.round(frame.permute(1,2,0).detach().cpu().numpy().clip(0,1)*255.).astype(np.uint8))
@@ -259,7 +268,12 @@ class LucidDreamer:
         if not self.scene:
             raise('Build 3D Scene First!')
         
-        for iteration in progress.tqdm(range(1, self.opt.iterations + 1), desc='[3/4] Baking Gaussians'):
+        if self.for_gradio:
+            iterable_gauss = progress.tqdm(range(1, self.opt.iterations + 1), desc='[3/4] Baking Gaussians')
+        else:
+            iterable_gauss = range(1, self.opt.iterations + 1)
+
+        for iteration in iterable_gauss:
             self.gaussians.update_learning_rate(iteration)
 
             # Every 1000 its we increase the levels of SH up to a maximum degree
@@ -352,10 +366,13 @@ class LucidDreamer:
 
         pts_coord_world, pts_colors = new_pts_coord_world2.copy(), new_pts_colors2.copy()
 
-        progress(0, desc='[1/4] Dreaming...')
-        # time.sleep(0.5)
+        if self.for_gradio:
+            progress(0, desc='[1/4] Dreaming...')
+            iterable_dream = progress.tqdm(range(1, len(render_poses)), desc='[1/4] Dreaming')
+        else:
+            iterable_dream = range(1, len(render_poses))
 
-        for i in progress.tqdm(range(1, len(render_poses)), desc='[1/4] Dreaming'):
+        for i in iterable_dream:
             R, T = render_poses[i,:3,:3], render_poses[i,:3,3:4]
 
             ### Transform world to pixel
@@ -483,10 +500,13 @@ class LucidDreamer:
         # render_poses = get_pcdGenPoses(pcdgenpath)
         internel_render_poses = get_pcdGenPoses('hemisphere', {'center_depth': center_depth})
 
-        progress(0, desc='[2/4] Aligning...')
-        # time.sleep(0.5)
+        if self.for_gradio:
+            progress(0, desc='[2/4] Aligning...')
+            iterable_align = progress.tqdm(range(len(render_poses)), desc='[2/4] Aligning')
+        else:
+            iterable_align = range(len(render_poses))
 
-        for i in progress.tqdm(range(len(render_poses)), desc='[2/4] Aligning'):
+        for i in iterable_align:
             for j in range(len(internel_render_poses)):
                 idx = i * len(internel_render_poses) + j
                 print(f'{idx+1} / {len(render_poses)*len(internel_render_poses)}')
