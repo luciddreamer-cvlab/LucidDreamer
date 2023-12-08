@@ -41,7 +41,7 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215
 
 2. Another demo is available on a [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb), implemented by [@camenduru](https://github.com/camenduru)
 (We greatly thank [@camenduru](https://github.com/camenduru) for the contribution).
-3. You can use the gradio demo locally by running [`CUDA_VISIBLE_DEVICES=0 python app.py`](app.py).
+3. You can use the gradio demo locally by running [`CUDA_VISIBLE_DEVICES=0 python app.py`](app.py) (full feature including huggingface model download, requires ~15GB) or [`CUDA_VISIBLE_DEVICES=0 python app_mini.py`](app_mini.py) (minimum viable demo, uses only SD1.5).
 4. You can also run this with command line interface as described below.
 
 ### Prerequisite
