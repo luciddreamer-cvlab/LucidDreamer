@@ -14,8 +14,8 @@ if __name__ == "__main__":
     parser.add_argument('--neg_text', '-nt', type=str, default='', help='Negative text prompt for scene generation')
 
     # Camera options
-    parser.add_argument('--campath_gen', '-cg', type=str, default='LookDown', choices=['LookDown', 'LookAround', 'Rotate_360'], help='Camera extrinsic trajectories for scene generation')
-    parser.add_argument('--campath_render', '-cr', type=str, default='LLFF', choices=['Back_and_forth', 'LLFF', 'Headbanging'], help='Camera extrinsic trajectories for video rendering')
+    parser.add_argument('--campath_gen', '-cg', type=str, default='lookdown', choices=['lookdown', 'lookaround', 'rotate360'], help='Camera extrinsic trajectories for scene generation')
+    parser.add_argument('--campath_render', '-cr', type=str, default='llff', choices=['back_and_forth', 'llff', 'headbanging'], help='Camera extrinsic trajectories for video rendering')
 
     # Inpainting options
     parser.add_argument('--seed', type=int, default=1, help='Manual seed for running Stable Diffusion inpainting')
@@ -45,8 +45,10 @@ if __name__ == "__main__":
     # Make default save directory if blank
     if args.save_dir == '':
         img_name = os.path.splitext(os.path.basename(args.image))[0]
-        args.save_dir = f'./results/{img_name}_{args.campath_gen}_{args.seed}'
+        args.save_dir = f'./outputs/{img_name}_{args.campath_gen}_{args.seed}'
+    if not os.path.exists(args.save_dir):
+        os.makedirs(args.save_dir, exist_ok=True)
 
-    ld = LucidDreamer(args.save_dir)
+    ld = LucidDreamer(for_gradio=False, save_dir=args.save_dir)
     ld.create(rgb_cond, txt_cond, neg_txt_cond, args.campath_gen, args.seed, args.diff_steps)
     ld.render_video(args.campath_render)

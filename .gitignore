@@ -206,6 +206,5 @@ pyrightconfig.json
 
 *.ply
 results
-pretrained
-dataset
+outputs
 gradio_cached_examples

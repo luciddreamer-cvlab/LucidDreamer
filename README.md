@@ -34,7 +34,7 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 
 We offer several ways to interact with LucidDreamer:
 
-1. A demo is available on [`ironjr/LucidDreamer` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer)
+1. A demo is available on [`ironjr/LucidDreamer` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer) (including custom SD ckpt) and [`ironjr/LucidDreamer-mini` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer-mini) (minimal features / try at here in case of the former is down)
 (We appreciate all the HF / Gradio team for their support).
 
 https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215-4db2-80d5-4825e91316bc
