@@ -46,7 +46,9 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215
 
 ### Prerequisite
 
-- Linux: Ubuntu>18.04
+- Linux: Ubuntu>=18.04.
+- CUDA>=11.4 (higher version is OK).
+- Python==3.9 (cannot use 3.10 due to open3d compatibility)
 
 ### Install
 
@@ -58,6 +60,7 @@ pip install torch==2.0.1 timm==0.6.7 # ZoeDepth
 pip install plyfile==0.8.1 # Gaussian splatting
 
 cd submodules/depth-diff-gaussian-rasterization-min
+# sudo apt-get install libglm-dev # may be required for the compilation.
 python setup.py install
 cd ../simple-knn
 python setup.py install
