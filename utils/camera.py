@@ -11,6 +11,7 @@
 import json
 
 import numpy as np
+import torch
 
 from scene.cameras import Camera, MiniCam
 from utils.general import PILtoTorch
@@ -45,8 +46,8 @@ def load_json(path, H, W):
             R = np.transpose(w2c[:3, :3])  # R is stored transposed due to 'glm' in CUDA code
             T = w2c[:3, 3]
 
-            w2c = getWorld2View(R, T).T
-            proj = getProjectionMatrix(znear, zfar, FoVx, FoVy).T
+            w2c = torch.as_tensor(getWorld2View(R, T)).T.cuda()
+            proj = getProjectionMatrix(znear, zfar, FoVx, FoVy).T.cuda()
             cams.append(MiniCam(W, H, FoVx, FoVy, znear, zfar, w2c, w2c @ proj))
     return cams
 
