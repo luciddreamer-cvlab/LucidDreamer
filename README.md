@@ -89,13 +89,13 @@ To run with your own inputs and prompts, attach following arguments after ``run.
 
 There are multiple available viewers / editors for Gaussian splatting `.ply` files.
 
-1. @playcanvas's [Super-Splat](https://github.com/playcanvas/super-splat) project ([Live demo](https://playcanvas.com/super-splat)). This is the viewer we have used for our debugging along with MeshLab.
+1. [@playcanvas](https://github.com/playcanvas)'s [Super-Splat](https://github.com/playcanvas/super-splat) project ([Live demo](https://playcanvas.com/super-splat)). This is the viewer we have used for our debugging along with MeshLab.
 
 ![image](https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/89c4b5dd-c66f-4ad2-b1be-e5f951273049)
 
-2. @antimatter15's [WebGL viewer](https://github.com/antimatter15/splat) for Gaussian splatting ([Live demo](https://antimatter15.com/splat/)).
+2. [@antimatter15](https://github.com/antimatter15)'s [WebGL viewer](https://github.com/antimatter15/splat) for Gaussian splatting ([Live demo](https://antimatter15.com/splat/)).
 
-3. @splinetool's [web-based viewer](https://spline.design/) for Gaussian splatting. This is the version we have used in our project page's demo.
+3. [@splinetool](https://github.com/splinetool)'s [web-based viewer](https://spline.design/) for Gaussian splatting. This is the version we have used in our project page's demo.
 
 ## 🚩 **Updates**
 
