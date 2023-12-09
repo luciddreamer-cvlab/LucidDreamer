@@ -85,6 +85,18 @@ To run with your own inputs and prompts, attach following arguments after ``run.
 - ``--diff_steps`` : number of denoising steps for Stable Diffusion inpainting. Default is 50.
 - ``-s`` : path to save results. 
 
+### Visualize `.ply` files
+
+There are multiple available viewers / editors for Gaussian splatting `.ply` files.
+
+1. @playcanvas's [Super-Splat](https://github.com/playcanvas/super-splat) project ([Live demo](https://playcanvas.com/super-splat)). This is the viewer we have used for our debugging along with MeshLab.
+
+![image](https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/89c4b5dd-c66f-4ad2-b1be-e5f951273049)
+
+2. @antimatter15's [WebGL viewer](https://github.com/antimatter15/splat) for Gaussian splatting ([Live demo](https://antimatter15.com/splat/)).
+
+3. @splinetool's [web-based viewer](https://spline.design/) for Gaussian splatting. This is the version we have used in our project page's demo.
+
 ## 🚩 **Updates**
 
 - ✅ December 8, 2023: [HuggingFace Space demo](https://huggingface.co/spaces/ironjr/LucidDreamer) is out. We deeply thank all the HF team for their support!
