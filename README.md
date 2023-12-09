@@ -77,8 +77,8 @@ python run.py
 To run with your own inputs and prompts, attach following arguments after ``run.py``.
 
 - ``-img`` : path of input image.
-- ``-t`` : text prompt. Can be either path to txt file or the text iteslf.
-- ``-nt`` : negative text prompt. Can be either path to txt file or the text iteslf.
+- ``-t`` : text prompt. Can be either path to txt file or the text itself.
+- ``-nt`` : negative text prompt. Can be either path to txt file or the text itself.
 - ``-cg`` : camera extrinsic path for generating scenes. Can be one of "Rotate_360", "LookAround", or "LookDown".
 - ``-cr`` : camera extrinsic path for rendering videos. Can be one of "Back_and_forth", "LLFF", or "Headbanging".
 - ``--seed`` : manual seed for Stable Diffusion inpainting.
