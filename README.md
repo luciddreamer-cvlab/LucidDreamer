@@ -46,18 +46,19 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215
 
 ### Prerequisite
 
-- Linux: Ubuntu>=18.04.
 - CUDA>=11.4 (higher version is OK).
 - Python==3.9 (cannot use 3.10 due to open3d compatibility)
 
 ### Install
-
+#### Ubuntu
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
 pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d torchvision gradio
-pip install torch==2.0.1 timm==0.6.7 # ZoeDepth
-pip install plyfile==0.8.1 # Gaussian splatting
+# ZoeDepth
+pip install torch==2.0.1 timm==0.6.7
+# Gaussian splatting
+pip install plyfile==0.8.1
 
 cd submodules/depth-diff-gaussian-rasterization-min
 # sudo apt-get install libglm-dev # may be required for the compilation.
@@ -65,6 +66,30 @@ python setup.py install
 cd ../simple-knn
 python setup.py install
 cd ../..
+```
+
+#### Windows (Experimental, Tested on Windows 11 with VS2022)
+**Note: Windows installation is experimental and may contain errors during installation. Please report the error to issues if occurs.**
+- CUDA of the same version as the cudatoolkit used when installing pytorch must be installed in your system. Here we assume that CUDA version is 11.8.
+- C++ (>=14) should be installed in your system. If not download it using the [Visual Studio build tools](https://visualstudio.microsoft.com/downloads/).
+  
+```bash
+conda create -n lucid python=3.9
+conda activate lucid
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d gradio
+# ZoeDepth
+pip install timm==0.6.7
+# Gaussian splatting
+pip install plyfile==0.8.1
+
+cd submodules\depth-diff-gaussian-rasterization-min\third_party
+git clone https://github.com/g-truc/glm.git
+cd ..\
+python setup.py install
+cd ..\simple-knn
+python setup.py install
+cd ..\..
 ```
 
 ### Run with your own samples
