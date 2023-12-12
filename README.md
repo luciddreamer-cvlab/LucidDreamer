@@ -30,27 +30,17 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 ---
 
 
-## ⚡ Usage
+## 🤖 Install
 
-We offer several ways to interact with LucidDreamer:
+### Ubuntu
 
-1. A demo is available on [`ironjr/LucidDreamer` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer) (including custom SD ckpt) and [`ironjr/LucidDreamer-mini` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer-mini) (minimal features / try at here in case of the former is down)
-(We appreciate all the HF / Gradio team for their support).
-
-https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215-4db2-80d5-4825e91316bc
-
-2. Another demo is available on a [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb), implemented by [@camenduru](https://github.com/camenduru)
-(We greatly thank [@camenduru](https://github.com/camenduru) for the contribution).
-3. You can use the gradio demo locally by running [`CUDA_VISIBLE_DEVICES=0 python app.py`](app.py) (full feature including huggingface model download, requires ~15GB) or [`CUDA_VISIBLE_DEVICES=0 python app_mini.py`](app_mini.py) (minimum viable demo, uses only SD1.5).
-4. You can also run this with command line interface as described below.
-
-### Prerequisite
+#### Prerequisite
 
 - CUDA>=11.4 (higher version is OK).
 - Python==3.9 (cannot use 3.10 due to open3d compatibility)
 
-### Install
-#### Ubuntu
+#### Installation script
+
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
@@ -68,15 +58,19 @@ python setup.py install
 cd ../..
 ```
 
-#### Windows (Experimental, Tested on Windows 11 with VS2022)
-**Note: Windows installation is experimental and may contain errors during installation. Please report the error to issues if occurs.**
-- CUDA of the same version as the cudatoolkit used when installing pytorch must be installed in your system. Here we assume that CUDA version is 11.8.
-- C++ (>=14) should be installed in your system. If not download it using the [Visual Studio build tools](https://visualstudio.microsoft.com/downloads/).
-  
+### Windows (Experimental, Tested on Windows 11 with VS2022)
+
+#### Checklist
+
+- Make sure that the versions of your installed [**CUDA**(https://developer.nvidia.com/cuda-11-8-0-download-archive)], [**cudatoolkit**](https://anaconda.org/nvidia/cudatoolkit), and [**pytorch**](https://pytorch.org/get-started/previous-versions/) match. We have tested on CUDA==11.8.
+- Make sure you download and install C++ (>=14) from the [Visual Studio build tools](https://visualstudio.microsoft.com/downloads/).
+
+#### Installation script
+
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
-conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+conda install pytorch=2.0.1 torchvision=0.15.2 torchaudio=2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
 pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d gradio
 # ZoeDepth
 pip install timm==0.6.7
@@ -91,6 +85,20 @@ cd ..\simple-knn
 python setup.py install
 cd ..\..
 ```
+
+## ⚡ Usage
+
+We offer several ways to interact with LucidDreamer:
+
+1. A demo is available on [`ironjr/LucidDreamer` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer) (including custom SD ckpt) and [`ironjr/LucidDreamer-mini` HuggingFace Space](https://huggingface.co/spaces/ironjr/LucidDreamer-mini) (minimal features / try at here in case of the former is down)
+(We appreciate all the HF / Gradio team for their support).
+
+https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215-4db2-80d5-4825e91316bc
+
+2. Another demo is available on a [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb), implemented by [@camenduru](https://github.com/camenduru)
+(We greatly thank [@camenduru](https://github.com/camenduru) for the contribution).
+3. You can use the gradio demo locally by running [`CUDA_VISIBLE_DEVICES=0 python app.py`](app.py) (full feature including huggingface model download, requires ~15GB) or [`CUDA_VISIBLE_DEVICES=0 python app_mini.py`](app_mini.py) (minimum viable demo, uses only SD1.5).
+4. You can also run this with command line interface as described below.
 
 ### Run with your own samples
 
@@ -124,6 +132,7 @@ There are multiple available viewers / editors for Gaussian splatting `.ply` fil
 
 ## 🚩 **Updates**
 
+- ✅ December 11, 2023: We have updated installation guides for Windows. Thank you [@Maoku](https://twitter.com/Maoku) for your great contribution!
 - ✅ December 8, 2023: [HuggingFace Space demo](https://huggingface.co/spaces/ironjr/LucidDreamer) is out. We deeply thank all the HF team for their support!
 - ✅ December 7, 2023: [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb) implementation is now available thanks to [@camenduru](https://github.com/camenduru)!
 - ✅ December 6, 2023: Code release!
