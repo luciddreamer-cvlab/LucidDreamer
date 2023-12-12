@@ -62,7 +62,7 @@ cd ../..
 
 #### Checklist
 
-- Make sure that the versions of your installed [**CUDA**(https://developer.nvidia.com/cuda-11-8-0-download-archive)], [**cudatoolkit**](https://anaconda.org/nvidia/cudatoolkit), and [**pytorch**](https://pytorch.org/get-started/previous-versions/) match. We have tested on CUDA==11.8.
+- Make sure that the versions of your installed [**CUDA**](https://developer.nvidia.com/cuda-11-8-0-download-archive), [**cudatoolkit**](https://anaconda.org/nvidia/cudatoolkit), and [**pytorch**](https://pytorch.org/get-started/previous-versions/) match. We have tested on CUDA==11.8.
 - Make sure you download and install C++ (>=14) from the [Visual Studio build tools](https://visualstudio.microsoft.com/downloads/).
 
 #### Installation script
