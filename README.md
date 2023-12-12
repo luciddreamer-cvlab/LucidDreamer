@@ -118,6 +118,18 @@ To run with your own inputs and prompts, attach following arguments after ``run.
 - ``--diff_steps`` : number of denoising steps for Stable Diffusion inpainting. Default is 50.
 - ``-s`` : path to save results. 
 
+### Guideline for the prompting / Troubleshoot
+
+#### General guides
+
+1. If your image is indoors with specific scene (and possible character in it), you can **just put the most simplest representation of the scene first**, like a cozy livingroom for christmas, or a dark garage, etc. Please avoid prompts like 1girl because it will generate many humans for each inpainting task.
+2. If you want to start from already hard-engineered image from e.g., StableDiffusion model, or a photo taken from other sources, you can try **using [WD14 tagger](https://github.com/toriato/stable-diffusion-webui-wd14-tagger) ([huggingface demo](https://huggingface.co/spaces/deepghs/wd14_tagging_online)) to extract the danbooru tags from an image**. Please ensure you remove some comma separated tags if you don't want them to appear multiple times. This include human-related objects, e.g., 1girl, white shirt, boots, smiling face, red eyes, etc. Make sure to specify the objects you want to have multiples of them.
+
+#### Q. I generate unwanted objects everywhere, e.g., photo frames.
+
+1. Manipulate negative prompts to set harder constraints for the frame object. You may try adding tags like twitter thumbnail, profile image, instagram image, watermark, text to the negative prompt. In fact, negative prompts are the best thing to try if you want some things not to be appeared in the resulting image.
+2. Actually, our SD1.5 model uses the standard stable-diffusion-inpainting-v1.5 model, which I think has vulnerability to generate framed photos. To avoid this, I'd rather try other custom checkpoint models, which employs different pipeline methods: LaMa inpainting -> ControlNet-inpaint guided image inpainting. I empirically find that this setting is more stable than the naive application of standard inpainting model.
+
 ### Visualize `.ply` files
 
 There are multiple available viewers / editors for Gaussian splatting `.ply` files.
