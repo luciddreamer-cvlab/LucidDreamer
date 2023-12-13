@@ -139,6 +139,7 @@ There are multiple available viewers / editors for Gaussian splatting `.ply` fil
 
 ## 🚩 **Updates**
 
+- ✅ December 12, 2023: We have precompiled wheels for the CUDA-based submodules and put them in `submodules/wheels`. The Windows installation guide is revised accordingly!
 - ✅ December 11, 2023: We have updated installation guides for Windows. Thank you [@Maoku](https://twitter.com/Maoku) for your great contribution!
 - ✅ December 8, 2023: [HuggingFace Space demo](https://huggingface.co/spaces/ironjr/LucidDreamer) is out. We deeply thank all the HF team for their support!
 - ✅ December 7, 2023: [Colab](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb) implementation is now available thanks to [@camenduru](https://github.com/camenduru)!
