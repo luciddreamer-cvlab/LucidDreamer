@@ -12,7 +12,7 @@
 # For permission requests, please contact robot0321@snu.ac.kr, esw0116@snu.ac.kr, namhj28@gmail.com, jarin.lee@gmail.com.
 import os
 import glob
-import time
+import platform
 import pathlib
 import shlex
 import subprocess
@@ -24,33 +24,38 @@ root = pathlib.Path(__file__).parent
 example_root = os.path.join(root, 'examples')
 ckpt_root = os.path.join(root, 'stablediffusion')
 
+user_os = platform.system()
+if user_os.lower() == 'windows':
+    use_symlinks = False
+else:
+    use_symlinks = 'auto'
+
 d = example_root
 if len(glob.glob(os.path.join(d, '*.ply'))) < 8:
-    snapshot_download(repo_id="ironjr/LucidDreamerDemo", repo_type="model", local_dir=d)
-
+    snapshot_download(repo_id="ironjr/LucidDreamerDemo", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 d = os.path.join(ckpt_root, 'Blazing Drive V11m')
 if not os.path.exists(d):
-    snapshot_download(repo_id="ironjr/BlazingDriveV11m", repo_type="model", local_dir=d)
+    snapshot_download(repo_id="ironjr/BlazingDriveV11m", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 d = os.path.join(ckpt_root, 'RealCartoon-Pixar V5')
 if not os.path.exists(d):
-    snapshot_download(repo_id="ironjr/RealCartoon-PixarV5", repo_type="model", local_dir=d)
+    snapshot_download(repo_id="ironjr/RealCartoon-PixarV5", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 d = os.path.join(ckpt_root, 'Realistic Vision V5.1')
 if not os.path.exists(d):
-    snapshot_download(repo_id="ironjr/RealisticVisionV5-1", repo_type="model", local_dir=d)
+    snapshot_download(repo_id="ironjr/RealisticVisionV5-1", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 d = os.path.join(ckpt_root, 'SD1-5')
 if not os.path.exists(d):
-    snapshot_download(repo_id="runwayml/stable-diffusion-inpainting", repo_type="model", local_dir=d)
+    snapshot_download(repo_id="runwayml/stable-diffusion-inpainting", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 
 try:
     import simple_knn
 except ModuleNotFoundError:
     #  subprocess.run(shlex.split('python setup.py install'), cwd=os.path.join(root, 'submodules', 'simple-knn'))
-    subprocess.run(shlex.split(f'pip install {root}/dist/simple_knn-0.0.0-cp39-cp39-linux_x86_64.whl'))
+    subprocess.run(shlex.split(f'pip install {root}/submodules/wheels/simple_knn-0.0.0-cp39-cp39-linux_x86_64.whl'))
 try:
     import depth_diff_gaussian_rasterization_min 
 except ModuleNotFoundError:
     #  subprocess.run(shlex.split('python setup.py install'), cwd=os.path.join(root, 'submodules', 'depth-diff-gaussian-rasterization-min'))
-    subprocess.run(shlex.split(f'pip install {root}/dist/depth_diff_gaussian_rasterization_min-0.0.0-cp39-cp39-linux_x86_64.whl'))
+    subprocess.run(shlex.split(f'pip install {root}/submodules/wheels/depth_diff_gaussian_rasterization_min-0.0.0-cp39-cp39-linux_x86_64.whl'))
 
 from luciddreamer import LucidDreamer
 
