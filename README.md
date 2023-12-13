@@ -128,7 +128,7 @@ To run with your own inputs and prompts, attach following arguments after ``run.
 #### Q. I generate unwanted objects everywhere, e.g., photo frames.
 
 1. Manipulate negative prompts to set harder constraints for the frame object. You may try adding tags like twitter thumbnail, profile image, instagram image, watermark, text to the negative prompt. In fact, negative prompts are the best thing to try if you want some things not to be appeared in the resulting image.
-2. Actually, our SD1.5 model uses the standard stable-diffusion-inpainting-v1.5 model, which I think has vulnerability to generate framed photos. To avoid this, I'd rather try other custom checkpoint models, which employs different pipeline methods: LaMa inpainting -> ControlNet-inpaint guided image inpainting. I empirically find that this setting is more stable than the naive application of standard inpainting model.
+2. Try using other custom checkpoint models, which employs different pipeline methods: LaMa inpainting -> ControlNet-inpaint guided image inpainting.
 
 ### Visualize `.ply` files
 
