@@ -218,6 +218,7 @@ class LucidDreamer:
             depthpath = os.path.join('examples', f'depth_{example_name}_{preset}.mp4')
         else:
             if self.for_gradio:
+                os.makedirs(os.path.join(self.root, self.timestamp), exist_ok=True)
                 videopath = os.path.join(self.root, self.timestamp, f'{preset}.mp4')
                 depthpath = os.path.join(self.root, self.timestamp, f'depth_{preset}.mp4')
             else:
