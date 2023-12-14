@@ -77,8 +77,14 @@ pip install timm==0.6.7
 # Gaussian splatting
 pip install plyfile==0.8.1
 
-pip install submodules/wheels/depth_diff_gaussian_rasterization_min-0.0.0-cp39-cp39-win_amd64.whl
-pip install submodules/wheels/simple_knn-0.0.0-cp39-cp39-win_amd64.whl
+# There is an issue with whl file so please manually install the module now.
+cd submodules\depth-diff-gaussian-rasterization-min\third_party
+git clone https://github.com/g-truc/glm.git
+cd ..\
+python setup.py install
+cd ..\simple-knn
+python setup.py install
+cd ..\..
 ```
 
 ## ⚡ Usage
