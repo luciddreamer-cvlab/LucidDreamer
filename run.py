@@ -18,6 +18,7 @@ if __name__ == "__main__":
     parser.add_argument('--campath_render', '-cr', type=str, default='llff', choices=['back_and_forth', 'llff', 'headbanging'], help='Camera extrinsic trajectories for video rendering')
 
     # Inpainting options
+    parser.add_argument('--model_name', type=str, default=None, help='Model name for inpainting(dreaming)')
     parser.add_argument('--seed', type=int, default=1, help='Manual seed for running Stable Diffusion inpainting')
     parser.add_argument('--diff_steps', type=int, default=50, help='Number of inference steps for running Stable Diffusion inpainting')
 
@@ -49,6 +50,18 @@ if __name__ == "__main__":
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir, exist_ok=True)
 
+    if args.model_name is not None and args.model_name.endswith('safetensors'):
+        print('Your model is saved in safetensor form. Converting to HF models...')
+        from diffusers.pipelines.stable_diffusion.convert_from_ckpt import download_from_original_stable_diffusion_ckpt
+
+        pipe = download_from_original_stable_diffusion_ckpt(
+            checkpoint_path_or_dict=args.model_name,
+            from_safetensors=True,
+            device='cuda',
+            )
+        pipe.save_pretrained('stablediffusion/', safe_serialization=False)
+        args.model_name = f'stablediffusion/{args.model_name}'
+
     ld = LucidDreamer(for_gradio=False, save_dir=args.save_dir)
-    ld.create(rgb_cond, txt_cond, neg_txt_cond, args.campath_gen, args.seed, args.diff_steps)
+    ld.create(rgb_cond, txt_cond, neg_txt_cond, args.campath_gen, args.seed, args.diff_steps, model_name=args.model_name)
     ld.render_video(args.campath_render)
