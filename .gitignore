@@ -205,6 +205,7 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
 
 *.ply
+*.safetensors
 results
 outputs
 gradio_cached_examples
