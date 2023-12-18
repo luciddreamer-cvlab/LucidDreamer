@@ -105,19 +105,21 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/745bfc46-8215
 
 ```bash
 # Default Example
-python run.py
+python run.py --image <path_to_image> --text <path_to_text_file> [Other options]
 ``` 
+- Replace <path_to_image> and <path_to_text_file> with the paths to your image and text files.
 
-To run with your own inputs and prompts, attach following arguments after ``run.py``.
+#### Other options
+- `--image` (`-img`): Specify the path to the input image for scene generation.
+- `--text` (`-t`): Path to the text file containing the prompt that guides the scene generation.
+- `--neg_text` (`-nt`): Optional. A negative text prompt to refine and constrain the scene generation.
+- `--campath_gen` (`-cg`): Choose a camera path for scene generation (options: `lookdown`, `lookaround`, `rotate360`).
+- `--campath_render` (`-cr`): Select a camera path for video rendering (options: `back_and_forth`, `llff`, `headbanging`).
+- `--model_name`: Optional. Name of the inpainting model used for dreaming. Leave blank for default(SD 1.5).
+- `--seed`: Set a seed value for reproducibility in the inpainting process.
+- `--diff_steps`: Number of steps to perform in the inpainting process.
+- `--save_dir` (`-s`): Directory to save the generated scenes and videos. Specify to organize outputs.
 
-- ``-img`` : path of input image.
-- ``-t`` : text prompt. Can be either path to txt file or the text itself.
-- ``-nt`` : negative text prompt. Can be either path to txt file or the text itself.
-- ``-cg`` : camera extrinsic path for generating scenes. Can be one of "Rotate_360", "LookAround", or "LookDown".
-- ``-cr`` : camera extrinsic path for rendering videos. Can be one of "Back_and_forth", "LLFF", or "Headbanging".
-- ``--seed`` : manual seed for Stable Diffusion inpainting.
-- ``--diff_steps`` : number of denoising steps for Stable Diffusion inpainting. Default is 50.
-- ``-s`` : path to save results. 
 
 ### Guideline for the prompting / Troubleshoot
 
