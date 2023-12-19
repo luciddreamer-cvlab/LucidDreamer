@@ -46,6 +46,7 @@ d = os.path.join(ckpt_root, 'SD1-5')
 if not os.path.exists(d):
     snapshot_download(repo_id="runwayml/stable-diffusion-inpainting", repo_type="model", local_dir=d, local_dir_use_symlinks=use_symlinks)
 
+'''
 try:
     import simple_knn
 except ModuleNotFoundError:
@@ -56,6 +57,7 @@ try:
 except ModuleNotFoundError:
     #  subprocess.run(shlex.split('python setup.py install'), cwd=os.path.join(root, 'submodules', 'depth-diff-gaussian-rasterization-min'))
     subprocess.run(shlex.split(f'pip install {root}/submodules/wheels/depth_diff_gaussian_rasterization_min-0.0.0-cp39-cp39-linux_x86_64.whl'))
+'''
 
 from luciddreamer import LucidDreamer
 
