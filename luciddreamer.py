@@ -188,6 +188,8 @@ class LucidDreamer:
             self.scene = Scene(self.traindata, self.gaussians, self.opt)        
             self.training()
             self.timestamp = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
+            if not os.path.exists(self.save_dir):
+                os.makedirs(self.save_dir)
             outfile = self.save_ply(os.path.join(self.save_dir, 'gsplat.ply'))
         return outfile
     
