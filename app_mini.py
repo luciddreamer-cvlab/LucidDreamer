@@ -59,7 +59,7 @@ css = """
 }
 """
 
-ld = LucidDreamer()
+ld = LucidDreamer(save_dir='./')
 
 
 with gr.Blocks(css=css) as demo:
