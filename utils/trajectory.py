@@ -254,10 +254,10 @@ def generate_seed_arc():
     render_poses = np.zeros((len(thlist), 3, 4))
     for i in range(len(thlist)):
         th = thlist[i]
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3 # manual central point for arc / you can change this value
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
-        render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
+        render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
         # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
@@ -274,10 +274,10 @@ def generate_seed_hemisphere(center_depth, degree=5):
         th = thlist[i]
         phi = philist[i]
         # curr_pose = np.zeros((1, 3, 4))
-        d = center_depth # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = center_depth # central point of (hemi)sphere / you can change this value
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
-        render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
+        render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
         # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
@@ -295,10 +295,10 @@ def generate_seed_hemisphere_(degree, nviews):
         th = thlist[i]
         phi = philist[i]
         # curr_pose = np.zeros((1, 3, 4))
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3 # manual central point for arc / you can change this value
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
-        render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
+        render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
     return render_poses
 
 
@@ -313,10 +313,10 @@ def generate_seed_nothing():
         th = thlist[i]
         phi = philist[i]
         # curr_pose = np.zeros((1, 3, 4))
-        d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
+        d = 4.3 # 
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
-        render_poses[0,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
+        render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector
         # render_poses[i,:3,3:4] = np.zeros((3,1))
 
     return render_poses
@@ -430,9 +430,6 @@ def generate_seed_back():
 
 def generate_seed_llff(degree, nviews, round=4, d=2.3):
     assert round%4==0
-    # thlist = np.array([degree, 0, 0, 0, -degree])
-    # philist = np.array([0, -degree, 0, degree, 0])
-    # d = 2.3
     thlist = degree * np.sin(np.linspace(0, 2*np.pi*round, nviews))
     philist = degree * np.cos(np.linspace(0, 2*np.pi*round, nviews))
     zlist = d/15 * np.sin(np.linspace(0, 2*np.pi*round//4, nviews))
@@ -443,8 +440,6 @@ def generate_seed_llff(degree, nviews, round=4, d=2.3):
         th = thlist[i]
         phi = philist[i]
         z = zlist[i]
-        # curr_pose = np.zeros((1, 3, 4))
-        # d = 4.3 # 얘를 조절하면 초기 자세 기준으로 앞으로 d만큼 떨어진 점을 기준으로 도는 자세가 만들어짐
         
         render_poses[i,:3,:3] = np.matmul(np.array([[np.cos(th/180*np.pi), 0, -np.sin(th/180*np.pi)], [0, 1, 0], [np.sin(th/180*np.pi), 0, np.cos(th/180*np.pi)]]), np.array([[1, 0, 0], [0, np.cos(phi/180*np.pi), -np.sin(phi/180*np.pi)], [0, np.sin(phi/180*np.pi), np.cos(phi/180*np.pi)]]))
         render_poses[i,:3,3:4] = np.array([d*np.sin(th/180*np.pi), 0, -z+d-d*np.cos(th/180*np.pi)]).reshape(3,1) + np.array([0, d*np.sin(phi/180*np.pi), -z+d-d*np.cos(phi/180*np.pi)]).reshape(3,1)# Transition vector

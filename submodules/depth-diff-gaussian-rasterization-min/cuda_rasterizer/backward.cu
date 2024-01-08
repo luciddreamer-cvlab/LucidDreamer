@@ -440,7 +440,7 @@ renderCUDA(
 	__shared__ float2 collected_xy[BLOCK_SIZE];
 	__shared__ float4 collected_conic_opacity[BLOCK_SIZE];
 	__shared__ float collected_colors[C * BLOCK_SIZE];
-	__shared__ float collected_depths[BLOCK_SIZE];
+	// __shared__ float collected_depths[BLOCK_SIZE];
 
 	// In the forward, we stored the final value for T, the
 	// product of all (1 - alpha) factors. 
@@ -454,18 +454,19 @@ renderCUDA(
 
 	float accum_rec[C] = { 0 };
 	float dL_dpixel[C];
-	float dL_depth;
-	float accum_depth_rec = 0;
+	// float dL_depth;
+	// float accum_depth_rec = 0;
 	if (inside)
 	{
-		for (int i = 0; i < C; i++)
+		for (int i = 0; i < C; i++){
 			dL_dpixel[i] = dL_dpixels[i * H * W + pix_id];
-	        dL_depth = dL_depths[pix_id];
+	        // dL_depth = dL_depths[pix_id];
+		}
 	}
 
 	float last_alpha = 0;
 	float last_color[C] = { 0 };
-	float last_depth = 0;
+	// float last_depth = 0;
 
 	// Gradient of pixel coordinate w.r.t. normalized 
 	// screen-space viewport corrdinates (-1 to 1)
@@ -487,7 +488,7 @@ renderCUDA(
 			collected_conic_opacity[block.thread_rank()] = conic_opacity[coll_id];
 			for (int i = 0; i < C; i++)
 				collected_colors[i * BLOCK_SIZE + block.thread_rank()] = colors[coll_id * C + i];
-		        collected_depths[block.thread_rank()] = depths[coll_id];
+		        // collected_depths[block.thread_rank()] = depths[coll_id];
 		}
 		block.sync();
 
@@ -535,22 +536,22 @@ renderCUDA(
 				// many that were affected by this Gaussian.
 				atomicAdd(&(dL_dcolors[global_id * C + ch]), dchannel_dcolor * dL_dchannel);
 			}
-			const float c_d = collected_depths[j];
-			accum_depth_rec = last_alpha * last_depth + (1.f - last_alpha) * accum_depth_rec;
-			last_depth = c_d;
-			dL_dalpha += (c_d - accum_depth_rec) * dL_depth;
+			// const float c_d = collected_depths[j];
+			// accum_depth_rec = last_alpha * last_depth + (1.f - last_alpha) * accum_depth_rec;
+			// last_depth = c_d;
+			// dL_dalpha += (c_d - accum_depth_rec) * dL_depth;
 			dL_dalpha *= T;
 
-			// Update the gradients w.r.t. depth (=z in camera coord.) of the Gaussian.
-			float3 m = points_xyz[global_id];
-			float4 m_hom = transformPoint4x4(m, projmatrix);
-			float m_w = 1.0f / (m_hom.w + 0.0000001f);
-			float mul3 = (projmatrix[2] * m.x + projmatrix[6] * m.y + projmatrix[10] * m.z + projmatrix[14]) * m_w * m_w;
-			// Update gradients w.r.t. 2D mean position of the Gaussian
-			const float dL_camz = dchannel_dcolor * dL_depth;
-			atomicAdd(&dL_dmean3D[global_id].x, (projmatrix[2] * m_w - projmatrix[3] * mul3) * dL_camz);
-			atomicAdd(&dL_dmean3D[global_id].y, (projmatrix[6] * m_w - projmatrix[7] * mul3) * dL_camz);
-			atomicAdd(&dL_dmean3D[global_id].z, (projmatrix[10] * m_w - projmatrix[11] * mul3) * dL_camz);
+			// // Update the gradients w.r.t. depth (=z in camera coord.) of the Gaussian.
+			// float3 m = points_xyz[global_id];
+			// float4 m_hom = transformPoint4x4(m, projmatrix);
+			// float m_w = 1.0f / (m_hom.w + 0.0000001f);
+			// float mul3 = (projmatrix[2] * m.x + projmatrix[6] * m.y + projmatrix[10] * m.z + projmatrix[14]) * m_w * m_w;
+			// // Update gradients w.r.t. 2D mean position of the Gaussian
+			// const float dL_camz = dchannel_dcolor * dL_depth;
+			// atomicAdd(&dL_dmean3D[global_id].x, (projmatrix[2] * m_w - projmatrix[3] * mul3) * dL_camz);
+			// atomicAdd(&dL_dmean3D[global_id].y, (projmatrix[6] * m_w - projmatrix[7] * mul3) * dL_camz);
+			// atomicAdd(&dL_dmean3D[global_id].z, (projmatrix[10] * m_w - projmatrix[11] * mul3) * dL_camz);
 			// Update last alpha (to be used in the next iteration)
 			last_alpha = alpha;
 
