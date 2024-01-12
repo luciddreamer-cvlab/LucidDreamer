@@ -28,17 +28,12 @@ namespace BACKWARD
 		const float* bg_color,
 		const float2* means2D,
 		const float4* conic_opacity,
-		const float3* means3D,
 		const float* colors,
-		const float* depths,
-		const float* projmatrix,
 		const float* final_Ts,
 		const uint32_t* n_contrib,
 		const float* dL_dpixels,
-		const float* dL_depths,
 		float3* dL_dmean2D,
 		float4* dL_dconic2D,
-		float3* dL_dmean3D,
 		float* dL_dopacity,
 		float* dL_dcolors);
 

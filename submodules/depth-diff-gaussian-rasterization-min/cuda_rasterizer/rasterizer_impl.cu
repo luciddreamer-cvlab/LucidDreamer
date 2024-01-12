@@ -401,17 +401,12 @@ void CudaRasterizer::Rasterizer::backward(
 		background,
 		geomState.means2D,
 		geomState.conic_opacity,
-		(float3*)means3D,
 		color_ptr,
-		depth_ptr,
-		projmatrix,
 		imgState.accum_alpha,
 		imgState.n_contrib,
 		dL_dpix,
-		dL_depths,
 		(float3*)dL_dmean2D,
 		(float4*)dL_dconic,
-		(float3*)dL_dmean3D,
 		dL_dopacity,
 		dL_dcolor), debug)
 
