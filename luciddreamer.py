@@ -167,6 +167,10 @@ class LucidDreamer:
         return image
 
     def run(self, rgb_cond, txt_cond, neg_txt_cond, pcdgenpath, seed, diff_steps, render_camerapath, model_name=None, example_name=None):
+        if self.for_gradio:
+            # Delete gsplat.ply if exists
+            if os.path.exists('./gsplat.ply'):
+                os.remove('./gsplat.ply')
         gaussians = self.create(
             rgb_cond, txt_cond, neg_txt_cond, pcdgenpath, seed, diff_steps, model_name, example_name)
         gallery, depth = self.render_video(render_camerapath, example_name=example_name)

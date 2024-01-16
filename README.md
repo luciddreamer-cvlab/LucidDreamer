@@ -50,9 +50,9 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
-pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d torchvision gradio omegaconf
+pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d torch==2.0.1  torchvision==0.15.2 gradio omegaconf
 # ZoeDepth
-pip install torch==2.0.1 timm==0.6.7
+pip install timm==0.6.7
 # Gaussian splatting
 pip install plyfile==0.8.1
 
