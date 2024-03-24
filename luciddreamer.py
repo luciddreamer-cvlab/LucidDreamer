@@ -71,7 +71,7 @@ class LucidDreamer:
         self.background = torch.tensor(bg_color, dtype=torch.float32, device='cuda')
         
         self.rgb_model = StableDiffusionInpaintPipeline.from_pretrained(
-            'runwayml/stable-diffusion-inpainting', revision='fp16', torch_dtype=torch.float16).to('cuda')
+            'runwayml/stable-diffusion-inpainting', revision='fp16', torch_dtype=torch.float16, safety_checker=None).to('cuda')
             # 'stablediffusion/SD1-5', revision='fp16', torch_dtype=torch.float16).to('cuda')
         self.d_model = torch.hub.load('./ZoeDepth', 'ZoeD_N', source='local', pretrained=True).to('cuda')
         self.controlnet = None
@@ -331,7 +331,7 @@ class LucidDreamer:
         generator=torch.Generator(device='cuda').manual_seed(seed)
 
         w_in, h_in = rgb_cond.size
-        if w_in/h_in > 1.1 or h_in/w_in > 1.1: # if height and width are similar, do center crop
+        if w_in/h_in > 1.1 or h_in/w_in > 1.1: # if height and width aren't similar, do center crop
             in_res = max(w_in, h_in)
             image_in, mask_in = np.zeros((in_res, in_res, 3), dtype=np.uint8), 255*np.ones((in_res, in_res, 3), dtype=np.uint8)
             image_in[int(in_res/2-h_in/2):int(in_res/2+h_in/2), int(in_res/2-w_in/2):int(in_res/2+w_in/2)] = np.array(rgb_cond)
@@ -354,7 +354,7 @@ class LucidDreamer:
 
         render_poses = get_pcdGenPoses(pcdgenpath)
         depth_curr = self.d(image_curr)
-        center_depth = np.mean(depth_curr[h_in//2-10:h_in//2+10, w_in//2-10:w_in//2+10])
+        center_depth = np.mean(depth_curr[(depth_curr.shape[0]//2)-10:(depth_curr.shape[0]//2)+10, (depth_curr.shape[1]//2)-10:(depth_curr.shape[1]//2)+10])
 
         ###########################################################################################################################
         # Iterative scene generation
@@ -525,7 +525,7 @@ class LucidDreamer:
                 Ti2j = internel_render_poses[j,:3,3:4]
 
                 Rw2j = np.matmul(Ri2j, Rw2i)
-                Tw2j = np.matmul(Ri2j, Tw2i) + Ti2j
+                Tw2j = np.matmul(Ri2j, Tw2i) + Ti2j 
 
                 # Transfrom cam2 to world + change sign of yz axis
                 Rj2w = np.matmul(yz_reverse, Rw2j).T
@@ -560,7 +560,7 @@ class LucidDreamer:
                 maskj[round_coord_camj[1], round_coord_camj[0]] = 1
                 maskj = maximum_filter(maskj, size=(9,9), axes=(0,1))
                 imagej = maskj[...,None]*imagej + (1-maskj[...,None])*(-1)
-
+                
                 maskj = minimum_filter((imagej.sum(-1)!=-3)*1, size=(11,11), axes=(0,1))
                 imagej = maskj[...,None]*imagej + (1-maskj[...,None])*0
 
