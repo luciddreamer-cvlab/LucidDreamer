@@ -7,6 +7,7 @@
 <div align="center">
 
 [![Project](https://img.shields.io/badge/Project-LucidDreamer-green)](https://luciddreamer-cvlab.github.io/)
+[![IEEE](https://img.shields.io/badge/IEEE-TVCG2025-white)](https://ieeexplore.ieee.org/document/11172686)
 [![ArXiv](https://img.shields.io/badge/Arxiv-2311.13384-red)](https://arxiv.org/abs/2311.13384)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/camenduru/LucidDreamer-Gaussian-colab/blob/main/LucidDreamer_Gaussian_colab.ipynb)
 [![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/ironjr/LucidDreamer-mini)
@@ -21,6 +22,7 @@
 
 </div>
 
+<h3 align="center">IEEE Transactions on Visualization and Computer Graphics (TVCG), 2025</h3>
 
 https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc-4133-b15a-05224e68b91e
 
