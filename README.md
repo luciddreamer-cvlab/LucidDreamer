@@ -22,7 +22,7 @@
 
 </div>
 
-<h3 align="center">IEEE Transactions on Visualization and Computer Graphics (TVCG), 2025</h3>
+<h3 align="center">IEEE Transactions on Visualization and Computer Graphics (TVCG), 2025<br/><p style="color: red;"><em/>Best Paper Runner-Up</em></p></h3>
 
 https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc-4133-b15a-05224e68b91e
 
