@@ -42,7 +42,8 @@ def colorize(value, vmin=None, vmax=None, cmap='jet', invalid_val=-99, invalid_m
     # grey out the invalid values
 
     value[invalid_mask] = np.nan
-    cmapper = matplotlib.cm.get_cmap(cmap)
+    # cmapper = matplotlib.cm.get_cmap(cmap)
+    cmapper = matplotlib.colormaps[cmap]
     if value_transform:
         value = value_transform(value)
         # value = value / value.max()
