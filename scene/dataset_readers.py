@@ -355,7 +355,7 @@ def loadCamerasFromData(traindata, white_background):
         image = Image.fromarray(np.array(arr*255.0, dtype=np.byte), "RGB")
         loaded_mask = np.ones_like(norm_data[:, :, 3:4])
 
-        fovy = focal2fov(fov2focal(fovx, image.size[1]), image.size[0])
+        fovy = focal2fov(fov2focal(fovx, image.size[0]), image.size[1])
         FovY = fovy 
         FovX = fovx
 
