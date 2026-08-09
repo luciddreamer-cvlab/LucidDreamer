@@ -44,7 +44,7 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 
 #### Prerequisite
 
-- CUDA>=11.4 (higher version is OK).
+- CUDA>=12.0 (higher version is OK, tested with 12.9).
 - Python==3.9 (cannot use 3.10 due to open3d compatibility)
 
 #### Installation script
@@ -52,11 +52,7 @@ https://github.com/luciddreamer-cvlab/LucidDreamer/assets/12259041/35004aaa-dffc
 ```bash
 conda create -n lucid python=3.9
 conda activate lucid
-pip install peft diffusers scipy numpy imageio[ffmpeg] opencv-python Pillow open3d torch==2.0.1  torchvision==0.15.2 gradio omegaconf
-# ZoeDepth
-pip install timm==0.6.7
-# Gaussian splatting
-pip install plyfile==0.8.1
+pip install -r requirements.txt
 
 cd submodules/depth-diff-gaussian-rasterization-min
 # sudo apt-get install libglm-dev # may be required for the compilation.

@@ -1,8 +1,8 @@
 timm==0.6.7
-torch==2.0.1
+torch==2.7.0
 plyfile==0.8.1
-diffusers==0.23.1
-peft==0.6.2
+diffusers==0.34.0
+peft==0.15.2
 torchvision 
 scipy
 numpy

@@ -71,7 +71,7 @@ class LucidDreamer:
         self.background = torch.tensor(bg_color, dtype=torch.float32, device='cuda')
         
         self.rgb_model = StableDiffusionInpaintPipeline.from_pretrained(
-            'runwayml/stable-diffusion-inpainting', revision='fp16', torch_dtype=torch.float16).to('cuda')
+            'sd-legacy/stable-diffusion-inpainting', variant='fp16', torch_dtype=torch.float16).to('cuda')
             # 'stablediffusion/SD1-5', revision='fp16', torch_dtype=torch.float16).to('cuda')
         self.d_model = torch.hub.load('./ZoeDepth', 'ZoeD_N', source='local', pretrained=True).to('cuda')
         self.controlnet = None
