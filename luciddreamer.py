@@ -331,11 +331,12 @@ class LucidDreamer:
         generator=torch.Generator(device='cuda').manual_seed(seed)
 
         w_in, h_in = rgb_cond.size
-        if w_in/h_in > 1.1 or h_in/w_in > 1.1: # if height and width are similar, do center crop
+        if w_in/h_in > 1.1 or h_in/w_in > 1.1: # if there is a large gap between height and width, do inpainting 
             in_res = max(w_in, h_in)
             image_in, mask_in = np.zeros((in_res, in_res, 3), dtype=np.uint8), 255*np.ones((in_res, in_res, 3), dtype=np.uint8)
             image_in[int(in_res/2-h_in/2):int(in_res/2+h_in/2), int(in_res/2-w_in/2):int(in_res/2+w_in/2)] = np.array(rgb_cond)
             mask_in[int(in_res/2-h_in/2):int(in_res/2+h_in/2), int(in_res/2-w_in/2):int(in_res/2+w_in/2)] = 0
+            mask_in = 255 - mask_in
 
             image2 = np.array(Image.fromarray(image_in).resize((self.cam.W, self.cam.H))).astype(float) / 255.0
             mask2 = np.array(Image.fromarray(mask_in).resize((self.cam.W, self.cam.H))).astype(float) / 255.0
@@ -346,7 +347,7 @@ class LucidDreamer:
                 mask_image=mask2,
             )
 
-        else: # if there is a large gap between height and width, do inpainting
+        else: # if height and width are similar, do center crop
             if w_in > h_in:
                 image_curr = rgb_cond.crop((int(w_in/2-h_in/2), 0, int(w_in/2+h_in/2), h_in)).resize((self.cam.W, self.cam.H))
             else: # w <= h
@@ -354,7 +355,8 @@ class LucidDreamer:
 
         render_poses = get_pcdGenPoses(pcdgenpath)
         depth_curr = self.d(image_curr)
-        center_depth = np.mean(depth_curr[h_in//2-10:h_in//2+10, w_in//2-10:w_in//2+10])
+        h_depth, w_depth = depth_curr.shape[0], depth_curr.shape[1]
+        center_depth = np.mean(depth_curr[h_depth//2-10:h_depth//2+10, w_depth//2-10:w_depth//2+10])
 
         ###########################################################################################################################
         # Iterative scene generation
